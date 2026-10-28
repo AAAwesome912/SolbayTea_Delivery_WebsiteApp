@@ -26,7 +26,7 @@ export function Shop() {
 
   const visible = useMemo(() => menu.filter((item) => {
     if (!q) return true
-    return item.name.toLowerCase().includes(q) || item.description.toLowerCase().includes(q)
+    return item.name.toLowerCase().includes(q) || (item.description || '').toLowerCase().includes(q)
   }), [menu, q])
 
   const groups = CATEGORIES.map((category) => ({

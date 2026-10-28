@@ -15,7 +15,7 @@ export const SHOP = {
   facebookPost: 'https://www.facebook.com/share/p/1Dk33994tX/',
   maps: 'https://www.google.com/maps/search/?api=1&query=SolbayTea+Roxas+Avenue+Poblacion+Malinao+Aklan',
   rating: 4.5,
-  cuisines: ['Milk tea', 'Filipino', 'Cafe', 'Pizza'],
+  cuisines: ['Milk tea', 'Filipino Food', 'Cafe', 'Pizza'],
 }
 
 export const CATEGORIES = [

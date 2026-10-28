@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Link } from 'react-router-dom'
 import { CATEGORIES, SHOP, hoursText, manilaDateKey, phoneText } from '../../shared/shop.js'
 import { ago, paymentLabel, peso } from '../format.js'
@@ -234,6 +235,14 @@ function MenuEditor({ menu }) {
     }
   }
 
+  useEffect(() => {
+    if (!draft) return undefined
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [draft])
+
   return (
     <div className="stack">
       <div className="row">
@@ -270,7 +279,7 @@ function MenuEditor({ menu }) {
           </li>
         ))}
       </ul>
-      {draft && (
+      {draft && createPortal(
         <div className="overlay sheet" onClick={() => setDraft(null)}>
           <form className="panel editor" onClick={(event) => event.stopPropagation()} onSubmit={save}>
             <div className="split">
@@ -333,7 +342,8 @@ function MenuEditor({ menu }) {
             {error && <p className="alert">{error}</p>}
             <button className="btn primary block" type="submit" disabled={busy}>{busy ? 'Saving…' : 'Save item'}</button>
           </form>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   )

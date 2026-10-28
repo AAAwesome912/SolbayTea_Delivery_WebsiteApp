@@ -28,9 +28,7 @@ export function Frame() {
     const base = TITLES[location.pathname] || 'Order'
     document.title = `${base} · SolbayTea Malinao`
     setCartOpen(false)
-    window.scrollTo(0, 0)
-    document.documentElement.scrollTop = 0
-    document.body.scrollTop = 0
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })
   }, [location.pathname])
 
   const zone = settings?.zones.find((entry) => entry.id === zoneId) || settings?.zones[0]

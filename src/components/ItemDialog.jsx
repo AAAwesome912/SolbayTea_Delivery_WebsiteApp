@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { ICE_LEVELS, SPICE_LEVELS, SUGAR_LEVELS, describeSelection, unitPrice } from '../../shared/shop.js'
 import { Thumb } from './Thumb.jsx'
 import { peso } from '../format.js'
@@ -51,7 +52,7 @@ export function ItemDialog({ item, onClose }) {
     }
   }
 
-  return (
+  return createPortal(
     <div className="overlay sheet" onClick={onClose}>
       <div
         className="panel"
@@ -166,6 +167,7 @@ export function ItemDialog({ item, onClose }) {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }

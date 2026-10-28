@@ -3,7 +3,15 @@ export function Thumb({ item, size = '' }) {
   if (item?.image) {
     return (
       <span className={className}>
-        <img src={item.image} alt="" />
+        <img
+          src={item.image}
+          alt=""
+          loading="lazy"
+          onLoad={(event) => event.currentTarget.classList.add('is-loaded')}
+          ref={(node) => {
+            if (node?.complete && node.naturalWidth) node.classList.add('is-loaded')
+          }}
+        />
       </span>
     )
   }

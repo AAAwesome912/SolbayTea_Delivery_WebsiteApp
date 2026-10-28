@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import { useNavigate } from 'react-router-dom'
 import { quote } from '../../shared/shop.js'
 import { peso } from '../format.js'
@@ -78,12 +79,13 @@ export function CartPanel({ onCheckout, promoCode = '' }) {
 export function CartDrawer({ open, onClose }) {
   const navigate = useNavigate()
   if (!open) return null
-  return (
+  return createPortal(
     <div className="overlay" onClick={onClose}>
       <div className="drawer" role="dialog" aria-modal="true" aria-label="Your order" onClick={(event) => event.stopPropagation()}>
         <button className="iconbtn" type="button" onClick={onClose} aria-label="Close cart">×</button>
         <CartPanel onCheckout={() => { onClose(); navigate('/checkout') }} />
       </div>
-    </div>
+    </div>,
+    document.body,
   )
 }
