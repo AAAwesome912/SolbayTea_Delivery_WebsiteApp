@@ -87,9 +87,9 @@ function hydrate(data) {
       order.branchLng = branch.lng
     }
   }
-  if (data.menuVersion !== 2) {
+  if (data.menuVersion !== 4) {
     data.menu = menuSeed()
-    data.menuVersion = 2
+    data.menuVersion = 4
   }
   return data
 }
@@ -440,6 +440,7 @@ function readImage(raw, existing) {
   if (raw.image === undefined) return existing?.image || ''
   if (!raw.image) return ''
   const image = String(raw.image)
+  if (/^\/menu\/[a-z0-9._-]+\.(jpe?g|png|webp)$/i.test(image)) return image
   if (!/^data:image\/(png|jpeg|jpg|webp);base64,/.test(image)) {
     fail(400, 'Use a JPG, PNG, or WebP photo.')
   }

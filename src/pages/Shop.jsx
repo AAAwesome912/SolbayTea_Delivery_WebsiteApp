@@ -14,6 +14,7 @@ function needsDialog(item) {
 export function Shop() {
   const { menu, settings, zoneId, branchId, branches, setBranchId, user, orders, addToCart } = useStore()
   const [query, setQuery] = useState('')
+  const [catQuery, setCatQuery] = useState('')
   const [active, setActive] = useState('popular')
   const [dialog, setDialog] = useState(null)
   const open = settings ? orderingOpen(settings) : false
@@ -34,6 +35,14 @@ export function Shop() {
   })).filter((group) => group.items.length)
 
   const popular = visible.filter((item) => item.popular)
+  const catQ = catQuery.trim().toLowerCase()
+  const catOptions = useMemo(() => {
+    const list = []
+    if (!q && popular.length > 0) list.push({ id: 'popular', name: 'Popular' })
+    groups.forEach((group) => list.push({ id: group.id, name: group.name }))
+    if (!catQ) return list
+    return list.filter((entry) => entry.name.toLowerCase().includes(catQ))
+  }, [groups, popular.length, q, catQ])
   const live = user?.role === 'customer'
     ? orders.find((order) => !['delivered', 'cancelled'].includes(order.status))
     : null
@@ -52,6 +61,28 @@ export function Shop() {
   function jump(id) {
     setActive(id)
     document.getElementById(`cat-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  function pickCategory(id) {
+    jump(id)
+    setCatQuery('')
+  }
+
+  function onCatChange(event) {
+    const value = event.target.value
+    setCatQuery(value)
+    const needle = value.trim().toLowerCase()
+    if (!needle) return
+    const exact = (!q && popular.length > 0 && needle === 'popular')
+      ? { id: 'popular' }
+      : groups.find((group) => group.name.toLowerCase() === needle)
+    if (exact) pickCategory(exact.id)
+  }
+
+  function onCatKey(event) {
+    if (event.key !== 'Enter' || !catOptions.length) return
+    event.preventDefault()
+    pickCategory(catOptions[0].id)
   }
 
   function add(item, event) {
@@ -119,15 +150,35 @@ export function Shop() {
             />
           </label>
 
+          <label className="search cat-find">
+            <span className="sr">Find a category</span>
+            <input
+              value={catQuery}
+              onChange={onCatChange}
+              onKeyDown={onCatKey}
+              placeholder="Type a category… burgers, set meals, batchoy"
+              list="menu-category-list"
+              autoComplete="off"
+            />
+            <datalist id="menu-category-list">
+              {catOptions.map((entry) => <option key={entry.id} value={entry.name} />)}
+            </datalist>
+          </label>
+
           <div className="cats">
-            {!q && popular.length > 0 && (
-              <button type="button" className={active === 'popular' ? 'on' : ''} onClick={() => jump('popular')}>Popular</button>
-            )}
-            {groups.map((group) => (
-              <button key={group.id} type="button" className={active === group.id ? 'on' : ''} onClick={() => jump(group.id)}>
-                {group.name}
+            {catOptions.map((entry) => (
+              <button
+                key={entry.id}
+                type="button"
+                className={active === entry.id ? 'on' : ''}
+                onClick={() => pickCategory(entry.id)}
+              >
+                {entry.name}
               </button>
             ))}
+            {catQ && catOptions.length === 0 && (
+              <span className="muted cat-empty">No category matches “{catQuery.trim()}”.</span>
+            )}
           </div>
         </div>
 

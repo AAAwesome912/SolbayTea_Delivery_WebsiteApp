@@ -38,6 +38,7 @@ export const CATEGORIES = [
   { id: 'pancit', name: 'Solbay Pancit' },
   { id: 'rice', name: 'Rice Meals' },
   { id: 'combo', name: 'Combo Meals' },
+  { id: 'set99', name: '99 Set Meals' },
   { id: 'student', name: 'Student Meals' },
   { id: 'single', name: 'Single Order' },
   { id: 'sizzling', name: 'Sizzling Plate' },

@@ -162,8 +162,15 @@ function MenuEditor({ menu }) {
   const [draft, setDraft] = useState(null)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
-  const [filter, setFilter] = useState('all')
-  const shown = menu.filter((item) => filter === 'all' || item.category === filter)
+  const [filter, setFilter] = useState('')
+  const shown = menu.filter((item) => {
+    const text = filter.trim().toLowerCase()
+    if (!text) return true
+    const category = CATEGORIES.find((entry) => entry.id === item.category)?.name || ''
+    return item.name.toLowerCase().includes(text)
+      || item.description.toLowerCase().includes(text)
+      || category.toLowerCase().includes(text)
+  })
 
   function edit(item) {
     setError('')
@@ -235,11 +242,18 @@ function MenuEditor({ menu }) {
       {error && !draft && <p className="alert">{error}</p>}
       <label className="field slim">
         Filter
-        <select value={filter} onChange={(event) => setFilter(event.target.value)}>
-          <option value="all">All categories</option>
-          {CATEGORIES.map((category) => <option key={category.id} value={category.id}>{category.name}</option>)}
-        </select>
+        <input
+          value={filter}
+          onChange={(event) => setFilter(event.target.value)}
+          placeholder="Type a category or item name…"
+          list="admin-menu-filter"
+          autoComplete="off"
+        />
+        <datalist id="admin-menu-filter">
+          {CATEGORIES.map((category) => <option key={category.id} value={category.name} />)}
+        </datalist>
       </label>
+      {filter.trim() && shown.length === 0 && <p className="muted">No menu items match that filter.</p>}
       <ul className="menulist">
         {shown.map((item) => (
           <li key={item.id}>

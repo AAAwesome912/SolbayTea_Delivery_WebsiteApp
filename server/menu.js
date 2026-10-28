@@ -1,4 +1,5 @@
 import { CLASSIC_SIZES, CUP_LARGE, DRINK_ADDONS, FRAPPE_SIZES, PREMIUM_SIZES } from '../shared/shop.js'
+import { withMenuPhotos } from './menuPhotos.js'
 
 function drink(id, category, name, price, extra = {}) {
   const sizes = extra.sizes || []
@@ -18,6 +19,7 @@ function drink(id, category, name, price, extra = {}) {
     spice: false,
     sizes: sizes.map((size) => ({ ...size })),
     addons: addons.map((addon) => ({ ...addon })),
+    image: extra.image || '',
   }
 }
 
@@ -37,6 +39,7 @@ function food(id, category, name, price, extra = {}) {
     spice: false,
     sizes: (extra.sizes || []).map((size) => ({ ...size })),
     addons: [],
+    image: extra.image || '',
   }
 }
 
@@ -84,7 +87,7 @@ const fruit = (id, name, emoji) => drink(id, 'fruit', name, 65, {
 })
 
 export function menuSeed() {
-  return [
+  return withMenuPhotos([
     classic('mt-salted-caramel', 'Salted Caramel', { popular: true }),
     classic('mt-red-velvet', 'Red Velvet'),
     classic('mt-wintermelon', 'Winter Melon', { popular: true }),
@@ -181,7 +184,9 @@ export function menuSeed() {
     food('bg-solbay', 'burger', 'Solbay Burger', 75, { emoji: '🍔', popular: true }),
     food('bg-chicken', 'burger', 'Chicken Burger', 75, { emoji: '🍔' }),
     food('bg-veg', 'burger', 'Vegetarian Burger', 75, { emoji: '🍔' }),
+    food('bg-sisig', 'burger', 'Burger Sisig', 75, { emoji: '🍔' }),
     food('bg-fries', 'burger', 'Burger with Fries', 135, { emoji: '🍔' }),
+    food('bg-sisig-fries', 'burger', 'Burger Sisig with Fries', 135, { emoji: '🍔', popular: true }),
     food('bg-king', 'burger', 'Burger King with Fries', 165, { emoji: '🍔' }),
     food('bg-king-egg', 'burger', 'Burger King with Fries & Egg', 175, { emoji: '🍔' }),
     food('bg-wings', 'burger', 'Burger, Fries, 3 pcs Buttered Wings', 210, { emoji: '🍔' }),
@@ -192,6 +197,10 @@ export function menuSeed() {
     food('ck-fried', 'chicken', 'Fried Chicken', 200, { emoji: '🍗', popular: true }),
     food('ck-buttered', 'chicken', 'Buttered Chicken', 220, { emoji: '🍗' }),
     food('ck-buffalo', 'chicken', 'Buffalo Wings', 230, { emoji: '🍗' }),
+    food('ck-teriyaki', 'chicken', 'Chicken Teriyaki', 230, { emoji: '🍗' }),
+    food('ck-salted-egg', 'chicken', 'Salted Egg Fried Wing', 240, { emoji: '🍗' }),
+    food('ck-sweet-sour', 'chicken', 'Sweet & Sour Chicken', 255, { emoji: '🍗' }),
+    food('ck-sweet-sour-pork', 'chicken', 'Sweet & Sour Pork', 255, { emoji: '🥩' }),
 
     food('pz-ham', 'pizza', 'Ham & Cheese', 210, { emoji: '🍕', kind: 'pizza' }),
     food('pz-ham-pepperoni', 'pizza', 'Ham & Cheese Pepperoni', 230, { emoji: '🍕', kind: 'pizza' }),
@@ -227,6 +236,8 @@ export function menuSeed() {
     food('rc-8', 'rice', '1 pc Pork Chop with Rice', 160, { emoji: '🥩', description: 'Meal 8.' }),
     food('rc-9', 'rice', '1 pc Buffalo Wings with Fries and Rice', 170, { emoji: '🍗', description: 'Meal 9.' }),
     food('rc-10', 'rice', '1 pc Sausage with Fries and Rice', 195, { emoji: '🌭', description: 'Meal 10.' }),
+    food('rc-palabok-chicken', 'rice', '1 pc Chicken with Palabok', 210, { emoji: '🍜', popular: true }),
+    food('rc-chopsuey-chicken', 'rice', '1 pc Chicken Rice Chopsuey', 170, { emoji: '🥗' }),
 
     food('cb-1', 'combo', 'Burger Steak with Fries & Rice', 105, { emoji: '🍱', description: 'Combo 1.' }),
     food('cb-2', 'combo', 'Chicken with Spaghetti', 150, { emoji: '🍱', description: 'Combo 2.' }),
@@ -238,6 +249,20 @@ export function menuSeed() {
     food('cb-8', 'combo', 'Clubhouse with Fries', 180, { emoji: '🍱', description: 'Combo 8.' }),
     food('cb-9', 'combo', 'Chicken, Spaghetti, Shanghai with Burger', 220, { emoji: '🍱', description: 'Combo 9.' }),
     food('cb-10', 'combo', 'Beef Steak with Sisig, Egg & Rice', 180, { emoji: '🍱', description: 'Combo 10.' }),
+
+    food('sm-a', 'set99', 'Set Meal A', 99, {
+      emoji: '🍱',
+      popular: true,
+      description: 'Sisig, Shanghai, Siomai, egg & rice.',
+    }),
+    food('sm-b', 'set99', 'Set Meal B', 99, {
+      emoji: '🍱',
+      description: 'BBQ, Shanghai, Siomai, egg & rice.',
+    }),
+    food('sm-c', 'set99', 'Set Meal C', 99, {
+      emoji: '🍱',
+      description: 'Chicken, Shanghai, Siomai, egg & rice.',
+    }),
 
     food('st-sisig', 'student', 'Sisig, Egg, Rice', 50, { emoji: '🍚' }),
     food('st-shanghai', 'student', 'Shanghai, Egg, Rice', 50, { emoji: '🍚' }),
@@ -285,6 +310,16 @@ export function menuSeed() {
     food('sb-lomi-order', 'sabaw', 'Lomi (1 Order)', 200, { emoji: '🍜' }),
     food('sb-luglug', 'sabaw', 'Luglug (Single)', 100, { emoji: '🍜' }),
     food('sb-luglug-order', 'sabaw', 'Luglug (1 Order)', 200, { emoji: '🍜' }),
+    food('sb-batchoy', 'sabaw', 'Batchoy', 50, {
+      emoji: '🍲',
+      popular: true,
+      description: 'Small ₱50, medium ₱100, large ₱200.',
+      sizes: [
+        { id: 's', label: 'Small', add: 0 },
+        { id: 'm', label: 'Medium', add: 50 },
+        { id: 'l', label: 'Large', add: 150 },
+      ],
+    }),
     food('sb-bulalo', 'sabaw', 'Bulalo', 250, { emoji: '🍲' }),
     food('sb-taeaba', 'sabaw', 'Taeaba', 65, { emoji: '🍜' }),
 
@@ -299,6 +334,7 @@ export function menuSeed() {
     food('sl-kimchi', 'salad', 'Kimchi', 200, { emoji: '🥬' }),
 
     bilao('bl-nachos', 'Solbay Nachos', 465, 795),
+    bilao('bl-palabok', 'Palabok Bilao', 875, 1075, { emoji: '🍜', popular: true }),
     bilao('bl-bihon', 'Bihon Canton', 670, 820),
     bilao('bl-spaghetti', 'Spaghetti Bilao', 770, 920),
     bilao('bl-carbonara', 'Carbonara Bilao', 770, 920),
@@ -337,5 +373,5 @@ export function menuSeed() {
     food('pl-tilapia', 'party', 'Inihaw na Tilapia (6 pcs)', 455, { emoji: '🐟', kind: 'party', description: 'Paluto.' }),
     food('pl-bangus', 'party', 'Inihaw na Bangus (4 pcs)', 510, { emoji: '🐟', kind: 'party', description: 'Paluto.' }),
     food('pl-hito', 'party', 'Inihaw na Hito (6 pcs)', 575, { emoji: '🐟', kind: 'party', description: 'Paluto.' }),
-  ]
+  ])
 }

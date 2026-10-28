@@ -188,6 +188,7 @@ code { font-family: Consolas, monospace; }
 }
 .search { display: block; margin: 14px 0; }
 .menu-tools .search { margin: 0 0 8px; }
+.menu-tools .cat-find { margin: 0 0 8px; }
 .search input { width: 100%; font-size: 16px; }
 .cats {
   display: flex;
@@ -207,7 +208,8 @@ code { font-family: Consolas, monospace; }
   font-weight: 700;
 }
 .cats button.on { background: var(--brown); color: white; border-color: var(--brown); }
-.section { scroll-margin-top: 212px; padding-top: 8px; }
+.cat-empty { align-self: center; white-space: nowrap; padding: 4px 2px; }
+.section { scroll-margin-top: 268px; padding-top: 8px; }
 .item {
   width: 100%;
   display: flex;
